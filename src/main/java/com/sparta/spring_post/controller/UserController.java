@@ -13,12 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 
-@RestController
-@RequiredArgsConstructor
-@RequestMapping("/api/user")
+@RestController                         // @RestController : 단순히 객체만들 반환하고 객체 데이터는 JSON 또는 XML 형식으로 HTTP 응답에 담아서 전송함
+@RequiredArgsConstructor                // @RequiredArgsConstructor : final 이 붙거나 @NotNull 이 붙은 필드의 생성자를 자동 생성해주는 lombok 어노테이션
+@RequestMapping("/api/user")         // @RequestMapping : 공통되는 URL 이 있을 경우 메서드에 중복되는 value 값을 없앨 수 있음
 public class UserController {
 
-    // UserService 연결
     private final UserService userService;
 
     // 회원가입
