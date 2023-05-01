@@ -6,7 +6,6 @@ import com.sparta.spring_post.dto.UserResponseDto;
 import com.sparta.spring_post.entity.Post;
 import com.sparta.spring_post.entity.Users;
 import com.sparta.spring_post.jwt.JwtUtil;
-import com.sparta.spring_post.repository.CommentRepository;
 import com.sparta.spring_post.repository.PostRepository;
 import com.sparta.spring_post.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -18,32 +17,30 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @Service
 @RequiredArgsConstructor
 public class PostService {
 
-    // PostRepository 연결
     private final PostRepository postRepository;
-    private final CommentRepository commentRepository;
-    // UserRepository 연결
     private final UserRepository userRepository;
-    // JwtUtil 연결
     private final JwtUtil jwtUtil;
-
 
     // 전체 게시물 목록 조회
     @Transactional(readOnly = true)
     public List<PostResponseDto> getAllPosts() {
         return postRepository.findAllByOrderByCreatedAtDesc().stream().map(PostResponseDto::new).collect(Collectors.toList());
+        // findAllByOrderByCreatedAtDesc() : DB 에서 모든 Post 엔티티를 검색하고 CreatedAt 필드를 기준으로 내림차순 정렬
+        // Stream() : Post 엔티티 목록을 스트림으로 변환하여 목록의 요소에서 기능 스타일 작업을 수행할 수 있도록 함
+        // map(PostResponseDto::new) : PostResponseDto 클래스의 생성자를 사용하여 각 Post 엔티티를 PostResponseDto 개체에 매핑함
+        // collect(Collectors.toList()) : postResponseDto 개체를 List 로 수집하고 List 를 최종 결과로 반환함
     }
-
 
     // 선택한 게시물 상세 조회
     @Transactional(readOnly = true)
     public PostResponseDto getPost(Long id) {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new NullPointerException(id + "번 게시물이 존재하지 않습니다.")
+                // NullPointerException (NPE) : 객체 생성 후 인스턴스를 생성하지 않은 상태에서 Null 오브젝트를 사용해서 발생함
         );
         return new PostResponseDto(post);
     }
@@ -89,7 +86,6 @@ public class PostService {
 
     }
 
-
     // 토큰 체크
     public Users checkJwtToken(HttpServletRequest request) {
         // Request에서 Token 가져오기
@@ -114,4 +110,5 @@ public class PostService {
         }
         return null;
     }
+
 }
