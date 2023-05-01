@@ -22,6 +22,8 @@ public class Users {
 
     @Column
     @Enumerated(EnumType.STRING)
+    // @Enumerated : enum 유형이 DB 에 유지되는 방법을 지정하는데 사용되는 JPA 어노테이션
+    // EnumType.STRING : EnumType 의 enum 값이 DB 에서 문자열로 유지되어야 함
     private RoleType role;
 
     public Users(String username, String password, RoleType role) {
